@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mt-5 text-center">Корзина</h1>
+    {% if cart|length > 0 %}
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        {% for item in cart %}
+                            <div class="row mb-4 border-bottom pb-3">
+                                <div class="col-md-3">
+                                    <a href="{% url 'product_detail' item.product.id item.product.slug %}">
+                                        <img src="{{ item.product.image.url }}"
+                                             class="img-fluid rounded"
+                                             style="max-height: 100px; object-fit: contain;">
+                                    </a>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5 class="card-title">{{ item.product.name }}</h5>
+                                    <p class="text-muted small mb-0">{{ item.product.category }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center justify-content-end gap-2">
+                                        <div class="input-group" style="max-width: 130px;">
+                                            <button class="btn btn-outline-secondary btn-sm"
+                                                    type="button"
+                                                    onclick="updateQuantity({{ item.product.id }}, {{ item.quantity|add:'-1' }})">
+                                                -
+                                            </button>
+                                            <input type="number"
+                                                   class="form-control form-control-sm text-center"
+                                                   value="{{ item.quantity }}"
+                                                   min="1"
+                                                   max="{{ item.product.stock }}"
+                                                   data-product-id="{{ item.product.id }}"
+                                                   onchange="updateQuantity({{ item.product.id }}, this.value)">
+                                            <button class="btn btn-outline-secondary btn-sm"
+                                                    type="button"
+                                                    onclick="updateQuantity({{ item.product.id }}, {{ item.quantity|add:'1' }})">
+                                                +
+                                            </button>
+                                        </div>
+                                        <div class="text-end" style="min-width: 100px;">
+                                            <div class="h6 mb-0">
+                                                {{ item.total_price|floatformat:"0" }} ₽
+                                            </div>
+                                            <small class="text-muted">
+                                                {{ item.price|floatformat:"0" }} ₽/шт
+                                            </small>
+                                        </div>
+                                        <a href="{% url 'cart_remove' item.product.id %}"
+                                           class="btn btn-link text-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Итого</h5>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Товаров:</span>
+                            <strong>{{ cart|length }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Общая сумма:</span>
+                            <strong class="h5">{{ cart.get_total_price|floatformat:"0" }} ₽</strong>
+                        </div>
+                        <a href="{% url 'order_create' %}"
+                           class="btn btn-primary w-100 btn-lg">
+                            Оформить заказ
+                        </a>
+                        <a href="{% url 'product_list' %}"
+                           class="btn btn-outline-secondary w-100 mt-2">
+                            Продолжить покупки
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-cart-x display-1 text-muted"></i>
+            </div>
+            <h4 class="mb-3">Ваша корзина пуста</h4>
+            <a href="{% url 'product_list' %}" class="btn btn-primary">
+                Начать покупки
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function updateQuantity(productId, quantity) {
+        const formData = new FormData();
+        formData.append('quantity', quantity);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+        fetch(`/cart/update/${productId}/`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === 'success') {
+                window.location.reload();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+{% endblock %}

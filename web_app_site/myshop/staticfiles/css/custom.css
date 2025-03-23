@@ -1,0 +1,107 @@
+/* custom.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    background-color: #343a40 !important;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-secondary, .btn-outline-secondary:hover {
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #ffffff !important;
+    color: #343a40 !important;
+}
+
+.btn-success, .btn-success:hover {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+
+.btn-success:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+}
+
+.btn-primary, .btn-primary:hover {
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3 !important;
+    border-color: #0051a2 !important;
+}
+
+.btn-danger, .btn-danger:hover {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+.btn-danger:hover {
+    background-color: #c82333 !important;
+    border-color: #bd2130 !important;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group .btn {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.total {
+    font-weight: bold;
+}
+
+.decrease-btn, .increase-btn {
+    cursor: pointer;
+}
+
+.decrease-btn:hover, .increase-btn:hover {
+    background-color: #343a40 !important;
+    border-color: #343a40 !important;
+}
+
+/* Исправление стилей для кнопок "Подробнее" и "В корзину" */
+.btn-group .btn {
+    width: auto;
+    padding: 5px 10px;
+}
+
+.row-cols-lg-3 {
+    column-count: 3;
+}
+
+@media (max-width: 992px) {
+    .row-cols-lg-3 {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .row-cols-lg-3 {
+        column-count: 1;
+    }
+}

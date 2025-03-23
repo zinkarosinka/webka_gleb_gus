@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Оплата заказа #{{ order.id }}</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Детали заказа:</h4>
+                    <ul class="list-group mb-4">
+                        {% for item in order.items.all %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                            <span>{{ item.get_cost }} ₽</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="alert alert-info">
+                        <h5 class="mb-0">Итого к оплате: {{ order.total_cost|floatformat:2 }} ₽</h5>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="payment-card p-4 border rounded">
+                        <h4 class="mb-4">Способ оплаты</h4>
+                        <div id="payment-form"></div>
+                        <div class="mt-3 text-muted small">
+                            <i class="bi bi-lock"></i> Операция защищена SSL-шифрованием
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://yookassa.ru/checkout-widget/v2/checkout-widget.js"></script>
+<script>
+    const paymentForm = new window.YooMoneyCheckoutWidget({
+        confirmation_token: '{{ payment.confirmation.confirmation_token }}',
+        return_url: '{{ YOOKASSA_RETURN_URL }}',
+        error_callback: function(error) {
+            console.error('Payment error:', error);
+            showToast('Ошибка оплаты', 'danger');
+        }
+    });
+
+    paymentForm.render('payment-form');
+</script>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static custom_filters %}
+
+{% block title %}Каталог товаров{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mt-5 text-center mb-4">Коллекция Глеб Гусаров</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for product in products %}
+            <div class="col mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative" style="height: 350px; overflow: hidden;">
+                        <div id="carousel-{{ product.id }}" class="carousel slide h-100" data-bs-ride="carousel">
+                            <div class="carousel-inner h-100">
+                                {% for image in product.images.all %}
+                                    <div class="carousel-item h-100 {% if forloop.first %}active{% endif %}">
+                                        <img src="{{ image.image.url }}"
+                                             class="d-block w-100 h-100"
+                                             alt="{{ product.name }}"
+                                             style="object-fit: contain; transition: transform 0.3s ease;"
+                                             onmouseover="this.style.transform='scale(1.05)'"
+                                             onmouseout="this.style.transform='scale(1)'">
+                                    </div>
+                                {% empty %}
+                                    <div class="carousel-item h-100 active">
+                                        <img src="{% static 'images/placeholder.jpg' %}"
+                                             class="d-block w-100 h-100"
+                                             alt="Placeholder"
+                                             style="object-fit: contain;">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% if product.images.count > 1 %}
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ product.id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ product.id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-3">{{ product.name }}</h5>
+
+                        <div class="mb-2">
+                            {% with desc_parts=product.description|split_lines %}
+                            <ul class="list-unstyled small">
+                                {% for part in desc_parts %}
+                                    {% if "Особенности:" in part %}
+                                        <li class="fw-bold">Особенности:</li>
+                                    {% elif part|slice:":1" == "-" %}  <!-- Исправлено здесь -->
+                                        <li>{{ part|slice:"2:" }}</li>
+                                    {% elif "Цвет:" in part %}
+                                        <li class="mt-2"><i class="bi bi-palette"></i> {{ part|split:":"|last|trim }}</li>
+                                    {% elif "Состав:" in part %}
+                                        <li><i class="bi bi-tag"></i> {{ part|split:":"|last|trim }}</li>
+                                    {% elif "Производство:" in part %}
+                                        <li><i class="bi bi-geo-alt"></i> {{ part|split:":"|last|trim }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endwith %}
+                        </div>
+
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="h5 text-primary">{{ product.price|floatformat:"0" }} ₽</span>
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-box-seam"></i> {{ product.stock }} шт.
+                                </span>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'product_detail' product.id product.slug %}"
+                                   class="btn btn-outline-dark btn-sm">
+                                    <i class="bi bi-eye"></i> Подробнее
+                                </a>
+
+                                <form action="{% url 'cart_add' product.id %}" method="post" class="d-flex gap-2">
+                                    {% csrf_token %}
+                                    <select class="form-select form-select-sm"
+                                            name="quantity"
+                                            style="width: 80px;">
+                                        {% with ''|center:product.stock as range %}
+                                        {% for _ in range %}
+                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                        {% endfor %}
+                                        {% endwith %}
+                                    </select>
+                                    <button type="submit" class="btn btn-dark btn-sm flex-grow-1">
+                                        <i class="bi bi-cart-plus"></i> В корзину
+                                    </button>
+                                    <input type="hidden" name="override" value="False">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> Коллекция временно недоступна
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+        border: 1px solid rgba(0,0,0,0.125);
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .form-select:focus, .btn:focus {
+        box-shadow: none;
+    }
+</style>
+<div class="debug-info" style="display: none;">
+        ID: {{ product.id }} | Slug: {{ product.slug }}
+    </div>
+{% endblock %}

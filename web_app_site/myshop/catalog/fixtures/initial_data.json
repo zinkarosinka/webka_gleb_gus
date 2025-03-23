@@ -1,0 +1,330 @@
+[
+    {
+        "model": "catalog.category",
+        "pk": 2,
+        "fields": {
+            "name": "Одежда",
+            "slug": "odezhda"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 1,
+        "fields": {
+            "category": 2,
+            "name": "Тёмно-синяя толстовка оверсайз с изображением ЛЕГАВЫЙ",
+            "slug": "temno-sinyaya-tolstovka",
+            "description": "Особенности:\n- Вышитый логотип на капюшоне\n- Изображение напечатано на лицевой и задней стороне\n- Карман кенгуру\nЦвет: Тёмно-синий\nСостав: 90% Хлопок, 10% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/temno-sinyaya-tolstovka1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 2,
+        "fields": {
+            "category": 2,
+            "name": "Синяя футболка оверсайз с изображением ЛЕГАВЫЙ",
+            "slug": "sinyaya-futbolka",
+            "description": "Особенности:\n- Изображение напечатано на лицевой и задней стороне\n- Вышитый логотип на задней части воротника\nЦвет: Синий\nСостав: 100% Хлопок\nПроизводство: Россия",
+            "price": "3990",
+            "image": "products/sinyaya-futbolka1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 3,
+        "fields": {
+            "category": 2,
+            "name": "Бордовая толстовка оверсайз с изображением BongaГлеб",
+            "slug": "bordovaya-tolstovka",
+            "description": "Особенности:\n- Вышитый логотип на капюшоне\n- Изображение напечатано на лицевой и задней стороне\n- Карман кенгуру\nЦвет: Бордовый\nСостав: 90% Хлопок, 10% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/bordovaya-tolstovka1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 4,
+        "fields": {
+            "category": 2,
+            "name": "Бордовая футболка оверсайз с изображением BongaГлеб",
+            "slug": "bordovaya-futbolka",
+            "description": "Особенности:\n- Изображение напечатано на лицевой и задней стороне\n- Вышитый логотип на задней части воротника\nЦвет: Бордовый\nСостав: 100% Хлопок\nПроизводство: Россия",
+            "price": "3990",
+            "image": "products/bordovaya-futbolka1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 5,
+        "fields": {
+            "category": 2,
+            "name": "Чёрная толстовка оверсайз с изображением МNГРАИТ",
+            "slug": "chernaya-tolstovka-migrant",
+            "description": "Особенности:\n- Вышитый логотип на капюшоне\n- Изображение напечатано на лицевой стороне\n- Карман кенгуру\nЦвет: Чёрный\nСостав: 90% Хлопок, 10% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/chernaya-tolstovka-migrant1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 6,
+        "fields": {
+            "category": 2,
+            "name": "Чёрная футболка оверсайз с изображением МNГРАИТ",
+            "slug": "chernaya-futbolka-migrant",
+            "description": "Особенности:\n- Изображение напечатано на лицевой стороне\n- Вышитый логотип на задней части воротника\nЦвет: Чёрный\nСостав: 100% Хлопок\nПроизводство: Россия",
+            "price": "3990",
+            "image": "products/chernaya-futbolka-migrant1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 7,
+        "fields": {
+            "category": 2,
+            "name": "Чёрная толстовка оверсайз с изображением ЭРОТИЧЕСКИЕ МЫСЛИ",
+            "slug": "chernaya-tolstovka-musli",
+            "description": "Особенности:\n- Шнурок и вышитый логотип на капюшоне\n- Изображение напечатано на лицевой стороне\nЦвет: Чёрный\nСостав: 80% Хлопок, 20% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/chernaya-tolstovka-musli1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 8,
+        "fields": {
+            "category": 2,
+            "name": "Чёрное зип-худи оверсайз с изображением THE DEVIL WEARS Глеб Гусаров",
+            "slug": "chernaya-zphudi-tdw",
+            "description": "Особенности:\n- Шнурок и вышитый логотип на капюшоне\n- Изображение напечатано на лицевой стороне\nЦвет: Чёрный\nСостав: 80% Хлопок, 20% Полиэстер\nПроизводство: Россия",
+            "price": "7490",
+            "image": "products/chernaya-zphudi-tdw1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 9,
+        "fields": {
+            "category": 2,
+            "name": "Белая толстовка оверсайз с изображением БЕСПЛАТНО",
+            "slug": "belaya-tolstovka-free",
+            "description": "Особенности:\n- Вышитый логотип на капюшоне\n- Изображение напечатано на лицевой стороне\n- Карман кенгуру\nЦвет: Белый\nСостав: 90% Хлопок, 10% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/belaya-tolstovka-free1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 10,
+        "fields": {
+            "category": 2,
+            "name": "Белая футболка оверсайз с изображением БЕСПЛАТНО",
+            "slug": "belaya-futbolka-free",
+            "description": "Особенности:\n- Изображение напечатано на лицевой стороне\n- Вышитый логотип на задней части воротника\nЦвет: Белый\nСостав: 100% Хлопок\nПроизводство: Россия",
+            "price": "3990",
+            "image": "products/belaya-futbolka-free1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 11,
+        "fields": {
+            "category": 2,
+            "name": "Голубая толстовка оверсайз с изображением ННДМНСК ГГ",
+            "slug": "golubaya-tolstovka-nnd",
+            "description": "Особенности:\n- Вышитый логотип на капюшоне\n- Изображение напечатано на лицевой и задней стороне\n- Карман кенгуру\nЦвет: Голубой\nСостав: 90% Хлопок, 10% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/golubaya-tolstovka-nnd1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 12,
+        "fields": {
+            "category": 2,
+            "name": "Голубая футболка оверсайз с изображением ННДМНСК ГГ",
+            "slug": "golubaya-futbolka-nnd",
+            "description": "Особенности:\n- Изображение напечатано на лицевой и задней стороне\n- Вышитый логотип на задней части воротника\nЦвет: Голубой\nСостав: 100% Хлопок\nПроизводство: Россия",
+            "price": "3990",
+            "image": "products/golubaya-futbolka-nnd1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 13,
+        "fields": {
+            "category": 2,
+            "name": "Чёрный пиджак с изображением МNГРАИТ",
+            "slug": "cherny-pidjak-migrant",
+            "description": "Особенности:\n- Вышитый логотип на капюшоне\n- Вшитый капюшон\n- Изображение напечатано на задней стороне\nЦвет: Чёрный\nСостав: 60% Полиэстер, 30% Вискоза, 10% Эластан\nПроизводство: Россия",
+            "price": "13990",
+            "image": "products/cherny-pidjak-migrant1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 14,
+        "fields": {
+            "category": 2,
+            "name": "Чёрный укороченный пиджак с изображением МNГРАИТ",
+            "slug": "cherny-ukoroch-pidjak-migrant",
+            "description": "Особенности:\n- Вышитый логотип на капюшоне\n- Вшитый капюшон\n- Изображение напечатано на задней стороне\nЦвет: Чёрный\nСостав: 60% Полиэстер, 30% Вискоза, 10% Эластан\nПроизводство: Россия",
+            "price": "12990",
+            "image": "products/cherny-ukoroch-pidjak-migrant1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 15,
+        "fields": {
+            "category": 2,
+            "name": "Голубые свободные карго-джинсы ГЛЕБ ГУСАРОВ",
+            "slug": "blue-cargo-jeans-gleb",
+            "description": "Особенности:\n- Вышитый логотип на задней части талии\n- Вышитый логотип на нижнем кармане\n- Много карманов\n- Застёжка на пуговицы\n- Петли для ремня\nЦвет: Голубой\nСостав: 100% Хлопок\nПроизводство: Россия",
+            "price": "10490",
+            "image": "products/blue-cargo-jeans-gleb1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 16,
+        "fields": {
+            "category": 2,
+            "name": "Чёрные свободные карго-джинсы ГЛЕБ ГУСАРОВ",
+            "slug": "black-sbodni-cargo-jeans-gg",
+            "description": "Особенности:\n- Вышитый логотип на задней части талии\n- Вышитый логотип на нижнем кармане\n- Много карманов\n- Застёжка на пуговицы\n- Петли для ремня\nЦвет: Чёрный\nСостав: 100% Хлопок\nПроизводство: Россия",
+            "price": "10490",
+            "image": "products/black-sbodni-cargo-jeans-gg1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 17,
+        "fields": {
+            "category": 2,
+            "name": "Чёрные свободные штаны с изображением ГЛЕБ ГУСАРОВ",
+            "slug": "black-sbodni-jeans-gg",
+            "description": "Особенности:\n- Два кармана\n- Вышитый логотип сзади\n- Эластичный шнурок\nЦвет: Чёрный\nСостав: 65% Хлопок, 35% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/black-sbodni-jeans-gg1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 18,
+        "fields": {
+            "category": 2,
+            "name": "Красные свободные штаны с изображением ГЛЕБ ГУСАРОВ",
+            "slug": "red-svobodni-jeans-gg",
+            "description": "Особенности:\n- Два кармана\n- Вышитый логотип сзади\n- Эластичный шнурок\nЦвет: Красный\nСостав: 65% Хлопок, 35% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/red-svobodni-jeans-gg1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 19,
+        "fields": {
+            "category": 2,
+            "name": "Чёрные свободные штаны с изображение из страз ГЛЕБ ГУСАРОВ",
+            "slug": "black-svobodni-straz-jeans-gg",
+            "description": "Особенности:\n- Два кармана\n- Вышитый логотип сзади\nЦвет: Чёрный\nСостав: 80% Хлопок, 20% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/black-svobodni-straz-jeans-gg1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 20,
+        "fields": {
+            "category": 2,
+            "name": "Белые свободные штаны с изображение из страз ГЛЕБ ГУСАРОВ",
+            "slug": "white-cvobodni-jeans-gg",
+            "description": "Особенности:\n- Два кармана\n- Вышитый логотип сзади\nЦвет: Белые\nСостав: 80% Хлопок, 20% Полиэстер\nПроизводство: Россия",
+            "price": "6990",
+            "image": "products/white-cvobodni-jeans-gg1.jpg",
+            "available": true,
+            "stock": 10,
+            "created": "2023-10-15T00:00:00",
+            "updated": "2023-10-15T00:00:00"
+        }
+    }
+]

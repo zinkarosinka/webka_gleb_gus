@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Основная форма -->
+        <div class="col-lg-8">
+            <div class="card checkout-card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Оформление заказа</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="checkoutForm" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <!-- Личные данные -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="id_first_name" class="form-label">Имя *</label>
+                                {{ form.first_name }}
+                                <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_last_name" class="form-label">Фамилия *</label>
+                                {{ form.last_name }}
+                                <div class="invalid-feedback">Пожалуйста, введите вашу фамилию</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email *</label>
+                            {{ form.email }}
+                            <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
+                        </div>
+
+                        <!-- Адрес доставки -->
+                        <div class="mb-3">
+                            <label class="form-label">Способ доставки *</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="delivery_method"
+                                       id="delivery_self" value="self" checked required>
+                                <label class="form-check-label" for="delivery_self">
+                                    Самовывоз (бесплатно)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="delivery_method"
+                                       id="delivery_cdek" value="cdek" required>
+                                <label class="form-check-label" for="delivery_cdek">
+                                    СДЭК (расчет при оформлении)
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Поля для СДЭК -->
+                        <div id="cdekFields" class="d-none">
+                            <div class="mb-3">
+                                <label for="id_city" class="form-label">Город *</label>
+                                {{ form.city }}
+                                <div class="invalid-feedback">Пожалуйста, выберите город</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_postal_code" class="form-label">Почтовый индекс *</label>
+                                {{ form.postal_code }}
+                                <div class="invalid-feedback">Пожалуйста, введите индекс</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_cdek_point" class="form-label">Пункт выдачи СДЭК</label>
+                                <select class="form-select" id="id_cdek_point" name="cdek_point" disabled>
+                                    <option value="">Загрузка пунктов выдачи...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'cart_detail' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Вернуться в корзину
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <span class="submit-text">Подтвердить заказ</span>
+                                <div class="spinner-border spinner-border-sm d-none" role="status"></div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Боковая панель -->
+        <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="card cart-summary">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Ваш заказ</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for item in cart_items %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ item.product.name }}
+                            <span class="badge bg-primary rounded-pill">×{{ item.quantity }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Сумма:</span>
+                        <span id="cartSubtotal">{{ cart_total }} ₽</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Доставка:</span>
+                        <span id="deliveryCost">0 ₽</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold fs-5 text-primary">
+                        <span>Итого:</span>
+                        <span id="cartTotal">{{ cart_total }} ₽</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Общие элементы
+    const deliveryMethods = document.querySelectorAll('input[name="delivery_method"]');
+    const cdekFields = document.getElementById('cdekFields');
+    const cdekPointSelect = document.getElementById('id_cdek_point');
+
+    // Обработчики доставки
+    deliveryMethods.forEach(method => {
+        method.addEventListener('change', function() {
+            if (this.value === 'cdek') {
+                cdekFields.classList.remove('d-none');
+                document.getElementById('id_city').required = true;
+                document.getElementById('id_postal_code').required = true;
+                loadCdekPoints();
+            } else {
+                cdekFields.classList.add('d-none');
+                document.getElementById('id_city').required = false;
+                document.getElementById('id_postal_code').required = false;
+                updateDeliveryCost(0);
+            }
+        });
+    });
+
+    // Загрузка пунктов СДЭК
+    async function loadCdekPoints() {
+        try {
+            cdekPointSelect.disabled = true;
+            const response = await fetch('/api/cdek/points/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            });
+
+            const data = await response.json();
+            cdekPointSelect.innerHTML = data.points.map(point =>
+                `<option value="${point.code}">${point.address}</option>`
+            ).join('');
+            cdekPointSelect.disabled = false;
+
+            // Рассчет стоимости
+            calculateCdekCost();
+
+        } catch (error) {
+            console.error('Ошибка загрузки пунктов:', error);
+        }
+    }
+
+    // Расчет стоимости доставки
+    async function calculateCdekCost() {
+        try {
+            const response = await fetch('/api/cdek/calculate/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    city: document.getElementById('id_city').value,
+                    weight: {{ total_weight }}
+                })
+            });
+
+            const data = await response.json();
+            if (data.cost) {
+                updateDeliveryCost(data.cost);
+            }
+        } catch (error) {
+            console.error('Ошибка расчета:', error);
+        }
+    }
+
+    // Обновление стоимости
+    function updateDeliveryCost(cost) {
+        const subtotal = parseFloat({{ cart_total }});
+        document.getElementById('deliveryCost').textContent = cost + ' ₽';
+        document.getElementById('cartTotal').textContent = (subtotal + cost).toFixed(2) + ' ₽';
+    }
+
+    // Валидация формы
+    const form = document.getElementById('checkoutForm');
+    form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    }, false);
+});
+
+// Вспомогательные функции
+function getCookie(name) {
+    /* ... предыдущая реализация ... */
+}
+</script>
+{% endblock %}

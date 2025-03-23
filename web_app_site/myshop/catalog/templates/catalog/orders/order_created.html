@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Заказ оформлен{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mt-5">Заказ оформлен</h1>
+    <p>Ваш заказ №{{ order.id }} успешно оформлен.</p>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Продолжить покупки</a>
+</div>
+{% endblock %}
