@@ -21,7 +21,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
+#thus vers works
 class Product(models.Model):
     image = models.ImageField(
         upload_to='products/',
@@ -34,7 +34,6 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     description = models.TextField(blank=True, verbose_name='Описание')
-
 
     category = models.ForeignKey(
         Category,
