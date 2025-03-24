@@ -1,14 +1,10 @@
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
-
+import os
 from django.utils.text import slugify
 import uuid
-
-def get_file_path(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = f"{uuid.uuid4()}.{ext}"
-    return f"products/{filename}"
+from django.core.validators import MinValueValidator
 
 class Category(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -23,40 +19,63 @@ class Category(models.Model):
         return self.name
 #thus vers works
 class Product(models.Model):
-    image = models.ImageField(
-        upload_to='products/',
-        blank=True,
-        verbose_name='Изображение'
+    category = models.ForeignKey(
+        Category,
+        related_name='products',
+        on_delete=models.CASCADE,
+        verbose_name='Категория'
     )
+    name = models.CharField(
+        max_length=200,
+        db_index=True,
+        verbose_name='Название'
+    )
+    slug = models.SlugField(
+        max_length=200,
+        db_index=True,
+        unique=True
+    )
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(0.01)],
+        verbose_name='Цена'
+    )
+    stock = models.PositiveIntegerField(
+        default=0,
+        validators=[MinValueValidator(0)],
+        verbose_name='Остаток'
+    )
+    available = models.BooleanField(
+        default=True,
+        verbose_name='Доступен'
+    )
+    created = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Создан'
+    )
+    updated = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Обновлен'
+    )
+
+    class Meta:
+        ordering = ('name',)
+        indexes = [
+            models.Index(fields=['id', 'slug']),
+            models.Index(fields=['name']),
+            models.Index(fields=['-created']),
+        ]
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
+
+    def __str__(self):
+        return self.name
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-    description = models.TextField(blank=True, verbose_name='Описание')
-
-    category = models.ForeignKey(
-        Category,
-        related_name='products',
-        on_delete=models.CASCADE
-    )
-    name = models.CharField(max_length=200, db_index=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    slug = models.SlugField(max_length=200, db_index=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField(default=0)
-    available = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ('name',)
-        indexes = [models.Index(fields=['id', 'slug'])]
-        verbose_name = 'Товар'
-        verbose_name_plural = 'Товары'
-    def __str__(self):
-        return self.name
-
 
 
 class ProductImage(models.Model):
@@ -66,22 +85,26 @@ class ProductImage(models.Model):
         related_name='images'
     )
     image = models.ImageField(upload_to='products/')
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Порядок сортировки'
+    )
 
-
-    image_number = models.PositiveIntegerField(editable=False)  # Автоинкрементный номер
+    class Meta:
+        ordering = ['order']
+        unique_together = ('product', 'order')
 
     def save(self, *args, **kwargs):
-        if not self.pk:  # Только при создании
-            last_number = ProductImage.objects.filter(
+        if not self.pk:
+            max_order = ProductImage.objects.filter(
                 product=self.product
-            ).aggregate(models.Max('image_number'))['image_number__max'] or 0
-            self.image_number = last_number + 1
+            ).aggregate(models.Max('order'))['order__max'] or 0
+            self.order = max_order + 1
 
-        # Генерация имени файла
-        ext = os.path.splitext(self.image.name)[1]
+        """ext = os.path.splitext(self.image.name)[1]
         slug = slugify(self.product.name)
-        filename = f"{slug}{self.image_number}{ext}"
-        self.image.name = f"products/{filename}"
+        filename = f"{slug}-{self.order}{ext}"
+        self.image.name = f"products/{filename}"""
 
         super().save(*args, **kwargs)
 
@@ -99,32 +122,11 @@ class Customer(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.username}'s profile"
+        def __str__(self):
+            return f"Customer {self.user.username}" if self.user else "Anonymous Customer"
 
 
 
-"""class ProductImage(models.Model):
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        related_name='images'
-    )
-    image = models.ImageField(
-        upload_to='products/',  # Убрали шаблон с датой
-        verbose_name='Изображение'
-    )
-    is_main = models.BooleanField(
-        default=False,
-        verbose_name='Главное изображение'
-    )
-    order = models.PositiveIntegerField(
-        default=0,
-        verbose_name='Порядок сортировки'
-    )
-
-    class Meta:
-        ordering = ['order']
-"""
 
 class Order(models.Model):
     STATUS_CHOICES = (
@@ -134,6 +136,11 @@ class Order(models.Model):
         ('delivering', 'В доставке'),
         ('completed', 'Завершен'),
         ('canceled', 'Отменен'),
+    )
+    DELIVERY_METHODS = (
+        ('self', 'Самовывоз'),
+        ('courier', 'Курьер'),
+        ('post', 'Почта'),
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -161,6 +168,16 @@ class Order(models.Model):
     total_cost = models.DecimalField(max_digits=10, decimal_places=2, default='0')
     delivery_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     payment_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    delivery_method = models.CharField(
+        max_length=10,
+        choices=DELIVERY_METHODS,
+        default='self'
+    )
+    total_cost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0  # Исправить с '0' на 0
+    )
 
     class Meta:
         ordering = ('-created',)
@@ -183,7 +200,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f'{self.id}'
+        return f'{self.quantity}x {self.product.name} (Order {self.order.id})'
 
     def get_cost(self):
         return self.price * self.quantity
@@ -202,6 +219,9 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def get_cost(self):
+        return self.product.price * self.quantity
 
     class Meta:
         unique_together = ('user', 'product')

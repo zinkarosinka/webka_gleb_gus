@@ -1,4 +1,4 @@
-/* Основные переменные */
+/* product_cards.css */
 :root {
     --primary-color: #2c3e50;
     --accent-color: #e74c3c;
@@ -30,8 +30,27 @@
 }
 
 /* Элементы карусели */
+.carousel-inner {
+    height: 350px;
+}
+
 .carousel-item {
-    transition: opacity 0.6s ease-in-out;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.carousel-item.active {
+    opacity: 1;
+}
+
+.carousel-item-prev,
+.carousel-item-next {
+    opacity: 0;
+    transform: translateX(20%);
+}
+
+.carousel-item-prev.carousel-item-start,
+.carousel-item-next.carousel-item-end {
+    transform: translateX(-20%);
 }
 
 .carousel-item img {
@@ -40,6 +59,27 @@
     max-height: 350px;
     width: auto;
     margin: 0 auto;
+}
+
+/* Индикаторы */
+.carousel-indicators {
+    bottom: -30px;
+}
+
+.carousel-indicators li {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ddd;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+.carousel-indicators .active {
+    background-color: var(--accent-color);
+    transform: scale(1.2);
+    width: 15px;
+    height: 15px;
 }
 
 /* Управление каруселью */
@@ -53,12 +93,20 @@
     border-radius: 50%;
     box-shadow: 0 2px 8px var(--shadow-color);
     opacity: 0;
-    transition: opacity 0.3s ease, background 0.2s ease;
+    transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 .carousel:hover .carousel-control-prev,
 .carousel:hover .carousel-control-next {
     opacity: 1;
+}
+
+.carousel-control-prev:hover {
+    transform: translateX(-3px);
+}
+
+.carousel-control-next:hover {
+    transform: translateX(3px);
 }
 
 .carousel-control-prev-icon,
@@ -124,7 +172,6 @@
 
     .carousel-control-prev,
     .carousel-control-next {
-        opacity: 1;
         width: 30px;
         height: 30px;
     }
