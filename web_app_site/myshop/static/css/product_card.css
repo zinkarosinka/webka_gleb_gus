@@ -233,3 +233,40 @@
     margin-right: 0.5rem;
     font-size: 1.1em;
 }
+/* Стили для карусели */
+.carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ddd;
+    transition: transform 0.2s ease;
+}
+
+.carousel-indicators .active {
+    background-color: #007bff;
+    transform: scale(1.2);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.carousel-control-prev:hover {
+    transform: translateX(-3px);
+}
+
+.carousel-control-next:hover {
+    transform: translateX(3px);
+}
+
+.carousel-item img {
+    object-fit: contain;
+    height: 350px;
+    width: 100%;
+    border-radius: 8px;
+}

@@ -58,7 +58,7 @@ class Product(models.Model):
         auto_now=True,
         verbose_name='Обновлен'
     )
-
+    #image = models.ImageField(upload_to='products/')
     class Meta:
         ordering = ('name',)
         indexes = [
@@ -93,6 +93,9 @@ class ProductImage(models.Model):
     class Meta:
         ordering = ['order']
         unique_together = ('product', 'order')
+
+    def __str__(self):
+        return f"Image for {self.product.name}"
 
     def save(self, *args, **kwargs):
         if not self.pk:

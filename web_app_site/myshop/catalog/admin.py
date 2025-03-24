@@ -5,10 +5,12 @@ from .models import Product
 
 from django.contrib import admin
 from .models import Product, Category, ProductImage
+from django.contrib import admin
+from .models import Product, ProductImage
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 1
+    extra = 3
 
 @admin.register(Product)  # ✅ Только один способ регистрации
 class ProductAdmin(admin.ModelAdmin):

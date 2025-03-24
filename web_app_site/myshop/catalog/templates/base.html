@@ -54,49 +54,49 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{% static 'js/custom.js' %}"></script>
     <script>
-        // Убедитесь, что CSRF токен доступен глобально
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
+    // Убедитесь, что CSRF токен доступен глобально
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
             }
-            return cookieValue;
         }
-        const csrftoken = getCookie('csrftoken');
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
 
-        document.addEventListener('DOMContentLoaded', function() {
-    // Обработчик для select в карточках товаров
-    document.querySelectorAll('select[name="quantity"]').forEach(select => {
-        select.addEventListener('change', function() {
-            const form = this.closest('form');
-            if (form) {
-                form.submit();
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Обработчик для select в карточках товаров
+        document.querySelectorAll('select[name="quantity"]').forEach(select => {
+            select.addEventListener('change', function() {
+                const form = this.closest('form');
+                if (form) {
+                    form.submit();
+                }
+            });
         });
     });
-});
 
-            function updateCartItem(productId, quantity) {
-                fetch(`/cart/update/${productId}/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': csrftoken
-                    },
-                    body: `quantity_${productId}=${quantity}&override_${productId}=True`
-                })
-                .then(response => response.redirected ? window.location.href = response.url : response.text())
-                .catch(error => console.error('Error:', error));
-            }
-        });
-    </script>
+    // Функция обновления элемента корзины
+    function updateCartItem(productId, quantity) {
+        fetch(`/cart/update/${productId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: `quantity_${productId}=${quantity}&override_${productId}=True`
+        })
+        .then(response => response.redirected ? window.location.href = response.url : response.text())
+        .catch(error => console.error('Error:', error));
+    }
+</script>
     {% block scripts %}{% endblock %}
 </body>
 </html>
