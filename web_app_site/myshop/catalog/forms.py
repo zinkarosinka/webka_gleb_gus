@@ -1,25 +1,3 @@
-"""from .models import Customer
-
-from django import forms
-from .models import Product
-
-class CartAddProductForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        product = kwargs.pop('product', None)
-        super(CartAddProductForm, self).__init__(*args, **kwargs)
-        if product:
-            self.fields['quantity'] = forms.TypedChoiceField(
-                choices=[(i, str(i)) for i in range(1, product.stock + 1)],
-                coerce=int,
-                initial=1
-            )
-        self.fields['override'] = forms.BooleanField(
-            required=False, initial=False, widget=forms.HiddenInput
-        )
-class OrderCreateForm(forms.ModelForm):
-    class Meta:
-        model = Customer
-        fields = ['first_name', 'last_name', 'email', 'address', 'postal_code', 'city']"""
 from django import forms
 from django.contrib.auth import get_user_model
 
