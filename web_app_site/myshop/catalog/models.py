@@ -66,6 +66,8 @@ class ProductImage(models.Model):
         related_name='images'
     )
     image = models.ImageField(upload_to='products/')
+
+
     image_number = models.PositiveIntegerField(editable=False)  # Автоинкрементный номер
 
     def save(self, *args, **kwargs):

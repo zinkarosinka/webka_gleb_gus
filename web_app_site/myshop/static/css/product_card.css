@@ -1,0 +1,163 @@
+/* Основные переменные */
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --hover-color: #c0392b;
+    --background-light: #f9f9f9;
+    --border-color: #ecf0f1;
+    --shadow-color: rgba(0,0,0,0.1);
+}
+
+/* Карточка товара */
+.card {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.3s ease;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--background-light);
+}
+
+.card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 12px 24px var(--shadow-color);
+}
+
+/* Контейнер карусели */
+.carousel {
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(135deg, #ffffff 0%, var(--background-light) 100%);
+}
+
+/* Элементы карусели */
+.carousel-item {
+    transition: opacity 0.6s ease-in-out;
+}
+
+.carousel-item img {
+    object-fit: contain;
+    padding: 15px;
+    max-height: 350px;
+    width: auto;
+    margin: 0 auto;
+}
+
+/* Управление каруселью */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 35px;
+    height: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.2s ease;
+}
+
+.carousel:hover .carousel-control-prev,
+.carousel:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(25%);
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+/* Тело карточки */
+.card-body {
+    padding: 1.5rem;
+    background: white;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Кнопки */
+.btn-outline-dark {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-dark {
+    background: var(--accent-color);
+    border: none;
+    transition: background 0.3s ease;
+}
+
+.btn-dark:hover {
+    background: var(--hover-color);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .carousel {
+        border-radius: 8px 8px 0 0;
+    }
+
+    .carousel-item img {
+        max-height: 250px;
+        padding: 10px;
+    }
+
+    .card {
+        margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        opacity: 1;
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-item img {
+        max-height: 200px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Дополнительные элементы */
+.badge.bg-secondary {
+    background: var(--primary-color) !important;
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+}
+
+.form-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(231, 76, 60, 0.25);
+}
+
+.list-unstyled li {
+    margin-bottom: 0.4rem;
+    line-height: 1.5;
+}
+
+.bi {
+    margin-right: 0.5rem;
+    font-size: 1.1em;
+}

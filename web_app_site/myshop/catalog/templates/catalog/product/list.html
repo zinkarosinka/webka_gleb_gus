@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% load static custom_filters %}
+{% load static %}
+{% load custom_filters %}
 
 {% block title %}Каталог товаров{% endblock %}
 
@@ -11,39 +12,46 @@
         {% for product in products %}
             <div class="col mb-4">
                 <div class="card h-100 shadow-sm">
+                    <!-- Карусель изображений -->
                     <div class="position-relative" style="height: 350px; overflow: hidden;">
-                        <div id="carousel-{{ product.id }}" class="carousel slide h-100" data-bs-ride="carousel">
+                        <div id="productCarousel-{{ product.id }}" class="carousel slide h-100" data-bs-ride="carousel">
                             <div class="carousel-inner h-100">
-                                {% for image in product.images.all %}
-                                    <div class="carousel-item h-100 {% if forloop.first %}active{% endif %}">
-                                        <img src="{{ image.image.url }}"
-                                             class="d-block w-100 h-100"
-                                             alt="{{ product.name }}"
-                                             style="object-fit: contain; transition: transform 0.3s ease;"
-                                             onmouseover="this.style.transform='scale(1.05)'"
-                                             onmouseout="this.style.transform='scale(1)'">
-                                    </div>
-                                {% empty %}
-                                    <div class="carousel-item h-100 active">
-                                        <img src="{% static 'images/placeholder.jpg' %}"
-                                             class="d-block w-100 h-100"
-                                             alt="Placeholder"
-                                             style="object-fit: contain;">
-                                    </div>
-                                {% endfor %}
-                            </div>
-                            {% if product.images.count > 1 %}
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ product.id }}" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ product.id }}" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            {% endif %}
-                        </div>
+                            {% for image in product.images.all %}
+                    <div class="carousel-item h-100 {% if forloop.first %}active{% endif %}">
+                    <img src="{{ image.image.url }}"
+                         class="d-block mx-auto img-fluid"
+                         style="object-fit: contain; max-height: 100%; width: auto;"
+                         alt="Изображение {{ product.name }}">
                     </div>
+                    {% empty %}
+                    <div class="carousel-item h-100 active">
+                        <img src="{% static 'images/placeholder.jpg' %}"
+                         class="d-block mx-auto img-fluid"
+                         style="object-fit: contain; max-height: 100%; width: auto;"
+                         alt="Нет изображения">
+                        </div>
+                    {% endfor %}
+                        </div>
+
+        {% if product.images.count > 1 %}
+            <!-- Кнопки управления -->
+            <button class="carousel-control-prev" type="button"
+                    data-bs-target="#productCarousel-{{ product.id }}"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Предыдущее</span>
+            </button>
+            <button class="carousel-control-next" type="button"
+                    data-bs-target="#productCarousel-{{ product.id }}"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Следующее</span>
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+                    <!-- Тело карточки -->
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title mb-3">{{ product.name }}</h5>
 
@@ -53,14 +61,23 @@
                                 {% for part in desc_parts %}
                                     {% if "Особенности:" in part %}
                                         <li class="fw-bold">Особенности:</li>
-                                    {% elif part|slice:":1" == "-" %}  <!-- Исправлено здесь -->
-                                        <li>{{ part|slice:"2:" }}</li>
-                                    {% elif "Цвет:" in part %}
-                                        <li class="mt-2"><i class="bi bi-palette"></i> {{ part|split:":"|last|trim }}</li>
-                                    {% elif "Состав:" in part %}
-                                        <li><i class="bi bi-tag"></i> {{ part|split:":"|last|trim }}</li>
-                                    {% elif "Производство:" in part %}
-                                        <li><i class="bi bi-geo-alt"></i> {{ part|split:":"|last|trim }}</li>
+                                    {% elif part|slice:":1" == "-" %}
+                                        <li>{{ part|slice:"2:"|trim }}</li>
+                                    {% else %}
+                                        {% with key_value=part|split:":" %}
+                                            {% if key_value|length == 2 %}
+                                                <li>
+                                                    {% if "Цвет" in key_value.0 %}
+                                                        <i class="bi bi-palette"></i>
+                                                    {% elif "Состав" in key_value.0 %}
+                                                        <i class="bi bi-tag"></i>
+                                                    {% elif "Производство" in key_value.0 %}
+                                                        <i class="bi bi-geo-alt"></i>
+                                                    {% endif %}
+                                                    {{ key_value.1|trim }}
+                                                </li>
+                                            {% endif %}
+                                        {% endwith %}
                                     {% endif %}
                                 {% endfor %}
                             </ul>
@@ -111,21 +128,8 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}
 
-<style>
-    .card {
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
-        border: 1px solid rgba(0,0,0,0.125);
-    }
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    }
-    .form-select:focus, .btn:focus {
-        box-shadow: none;
-    }
-</style>
-<div class="debug-info" style="display: none;">
-        ID: {{ product.id }} | Slug: {{ product.slug }}
-    </div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/product_cards.css' %}">
 {% endblock %}

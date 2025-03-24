@@ -30,7 +30,7 @@ class Cart(object):
                 self.cart[product_id]['quantity'] = min(new_qty, product.stock)
 
             self.save()
-            messages.success(request, f"Товар {product.name} добавлен в корзину")
+            #messages.success(request, f"Товар {product.name} добавлен в корзину")
         except ValueError as e:
             messages.error(request, str(e))
         return redirect('cart_detail')
